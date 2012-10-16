@@ -5,6 +5,9 @@
 -- mildly useful. Use it for whatever you like, including
 -- commercial projects. Go nuts.
 
+-- TemplateLove conf
+require "templatelove_conf"
+
 -- Game includes
 require "TemplateLOVE/splash"
 require "TemplateLOVE/menu"
@@ -18,6 +21,10 @@ require "TemplateLOVE/GUIFonts"
 
 -- The first thing the LOVE2D engine calls after conf.lua
 function love.load()
+
+	-- Get config options
+	c = {}
+	templatelove_conf(c)
 
 	-- Initialize random generator
 	math.randomseed(os.time())
@@ -110,8 +117,13 @@ function love.keypressed(key)
 
 	if cur_state	== state.game then 
 		game.keypressed(key)
-		
-	elseif cur_state== state.splash then
+	end
+
+	if not c.use_keyboard then
+		return nil
+	end	
+	
+	if cur_state== state.splash then
 		splash.keypressed(key)
 		
 	elseif cur_state== state.menu then
@@ -132,8 +144,13 @@ function love.mousepressed(x,y,k)
 
 	if cur_state	== state.game then 
 		game.mousepressed(x,y,k)
-		
-	elseif cur_state== state.splash then
+	end
+	
+	if not c.use_mouse then
+		return nil
+	end
+	
+	if cur_state== state.splash then
 		splash.mousepressed(x,y,k)
 		
 	elseif cur_state== state.menu then

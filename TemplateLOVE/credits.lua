@@ -8,8 +8,14 @@ function credits.init()
 	--Init Credit fonts/sizes/colours
 	
 	-- Movement vars
-	credits.scrollspeed = 25
-	credits.y_pos = love.graphics.getHeight()/2
+	credits.y_pos = love.graphics.getHeight()*0.1
+	credits.scrollspeed = 0
+	
+	if c.cred_scroll then -- If credits are set to scroll, update movement and starting pos from config
+		credits.scrollspeed = c.cred_speed
+		credits.y_pos = love.graphics.getHeight()/2
+	end
+	
 	credits.scrollfinished = false;
 	
 	-- Positioning vars

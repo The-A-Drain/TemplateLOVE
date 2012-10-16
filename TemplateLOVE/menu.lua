@@ -5,20 +5,36 @@
 menu = {}
 
 function menu.init()
+
+	
 	
 	menu_items = {
 		"Start",
-		"Options",
-		"Credits",
+		--"Options",
+		--"Credits",
 		"Quit"
 	}
+	
+	if c.menu_showOptions then
+		table.insert( menu_items, #menu_items, "Options" )
+	end
+	
+	if c.menu_showCredits then
+		table.insert( menu_items, #menu_items, "Credits" )
+	end
 	
 	cur_selection 		= 1
 	title_color			= { 222, 222, 222, 255 }
 	menuItem_color		= { 170, 170, 170, 255 }
 	selection_color		= { 255, 255, 255, 255 }
 	verticalTextOffset 	= 48
+	
+	
 	title				= love.graphics.getCaption()
+	if not c.menu_useCaption then
+		title = c.menu_gameTitle
+	end
+	
 	titleX				= 0
 	titleY				= 0
 	menuYPos			= 0
@@ -31,6 +47,10 @@ function menu.init()
 end
 
 function menu.update()
+
+	if not c.use_mouse then
+		return nil
+	end
 	-- Check the current mouse position
 	local mx, my = love.mouse.getPosition()
 	menu.mouseover = false;
@@ -45,6 +65,8 @@ function menu.update()
 			menu.mouseover = true;
 		 end
 	end
+	
+	
 end
 
 function menu.checkbutton_mouseover(x1, y1, x2, y2, w2, h2)
@@ -93,16 +115,17 @@ end
 
 -- Process the user selection 
 function menu.process_option()
-	if cur_selection == 1 then		-- START
+	local str	= menu_items[cur_selection]
+	if str == "Start" then		-- START
 		cur_state = state.game
 	
-	elseif cur_selection == 2 then	-- OPTIONS
+	elseif str == "Options" then	-- OPTIONS
 		cur_state = state.options
 	
-	elseif cur_selection == 3 then	-- CREDITS
+	elseif str == "Credits" then	-- CREDITS
 		cur_state = state.credits
 	
-	elseif cur_selection == 4 then	-- QUIT
+	elseif str == "Quit" then	-- QUIT
 		love.event.push("quit")
 	end
 end

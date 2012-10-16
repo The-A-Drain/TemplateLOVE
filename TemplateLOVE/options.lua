@@ -61,14 +61,20 @@ end
 
 -- Update
 function options.update(dt)
-	--adjust current selection
-	if cur_option > #option_items then
-		cur_option = 1
-	elseif cur_option < 1 then
-		cur_option = #option_items
+
+	if c.use_keyboard then
+		--adjust current selection
+		if cur_option > #option_items then
+			cur_option = 1
+		elseif cur_option < 1 then
+			cur_option = #option_items
+		end
 	end
 	
 	-- Check mouse position
+	if not c.use_mouse then
+		return nil
+	end
 	local mx, my = love.mouse.getPosition()
 	options.mouseover = false
 	
@@ -123,6 +129,10 @@ function options.draw()
 end
 
 function options.keypressed(key)
+
+	if not c.use_keyboard then
+		return nil
+	end
 
 	--Menu navigation
 	if key == 'escape' then -- Exit back out to the menu

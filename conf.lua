@@ -29,5 +29,4 @@ function love.conf(t)
 	t.modules.mouse		= true
 	t.modules.sound		= true
 	t.modules.physics	= false
-	
 end
