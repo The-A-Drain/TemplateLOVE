@@ -53,6 +53,12 @@ function menu.update()
 	end
 	-- Check the current mouse position
 	local mx, my = love.mouse.getPosition()
+	
+	-- If the mouse hasn't moved, bail
+	if mx == previous_mouse_x and my == previous_mouse_y then
+		return nil
+	end
+	
 	menu.mouseover = false;
 	for i=1, #menu_items, 1 do
 		 --menuXPos, menuYPos + (verticalTextOffset * (i-1))

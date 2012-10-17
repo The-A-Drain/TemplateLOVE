@@ -51,6 +51,10 @@ function love.load()
 	options.init() 	-- Init the options menu
 	credits.init() 	-- Init the credits screen
 	game.init() 	-- Init the game
+	
+	-- Mouse position at the end of each frame
+	previous_mouse_x = 0;
+	previous_mouse_y = 0;
 end
 
 -- Update the current state
@@ -60,6 +64,7 @@ function love.update(dt)
 		cur_state.update(dt)
 	end
 	
+	previous_mouse_x, previous_mouse_y = love.mouse.getPosition()
 end
 
 -- Draw function

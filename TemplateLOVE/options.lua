@@ -76,6 +76,13 @@ function options.update(dt)
 		return nil
 	end
 	local mx, my = love.mouse.getPosition()
+	
+	-- If the mouse hasn't moved, bail
+	if mx == previous_mouse_x and my == previous_mouse_y then
+		return nil
+	end
+	
+	-- Reset mouseover 
 	options.mouseover = false
 	
 	--love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 1
