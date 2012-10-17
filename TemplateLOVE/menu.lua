@@ -88,6 +88,10 @@ function menu.onresolutionchange()
 	menuYPos			= love.graphics:getHeight()*0.41
 	menuXPos			= love.graphics:getWidth()*0.21
 	
+	if (love.graphics.getWidth() / love.graphics.getHeight()) <= 1.4 then --probably 4:3
+		titleY = titleY + love.graphics:getHeight()*0.10
+	end
+	--print ("reschange_menu")
 end
 
 function menu.draw()
@@ -97,7 +101,12 @@ function menu.draw()
 	
 	-- Draw the title background
 	-- at current resolution
-	love.graphics.draw( title_bg, 0, 0, math.rad(0), love.graphics.getWidth()/title_bg:getWidth(), love.graphics.getHeight()/title_bg:getHeight(), 0, 0 )
+	if c.menu_scalebg then
+		draw_scalemode( title_bg, c.menu_scalemode )
+	else
+		love.graphics.draw( title_bg, 0, 0, math.rad(0), love.graphics.getWidth()/title_bg:getWidth(), love.graphics.getHeight()/title_bg:getHeight(), 0, 0 )
+	end
+	
 	love.graphics.setFont( fonts.nMedium )
 	
 	-- Draw the game title

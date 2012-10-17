@@ -109,7 +109,48 @@ end
 -- Is called when options.lua changes the resolution
 -- and updates the other aspects of the menu
 function love.onresolutionchange()
-	if cur_state then 
-		cur_state.onresolutionchange()
-	end
+	splash.resolutionchanged()
+	menu.resolutionchanged()
+	options.resolutionchanged()
+	--game.resolutionchanged()
+	--pause	= pause,
+	credits.resolutionchanged()
+end
+
+-- Stretch the rectangle to fit the screen
+function stretch_to_fit(w, h)
+	return love.graphics.getWidth(), love.graphics.getHeight()
+end
+
+-- Scale the rectangle to fit the screen width (letterbox if necessary)
+function fit_width(w, h)
+	ratio = w/h
+	w = love.graphics.getWidth()
+	h = math.floor( w / ratio )
+	
+	return w, h
+end
+
+-- Scale the rectangle to fit the screen height (pillarbox if necessary)
+function fit_height(w, h)
+	ratio = w/h
+	h = love.graphics.getHeight()
+	w = math.floor( h * ratio )
+	return w, h
+end
+
+function draw_scalemode( img, s_mode )
+
+	if s_mode == "fit-width" then
+		local w, h = fit_width(img:getWidth(), img:getHeight())
+		love.graphics.draw( img, 0, ( love.graphics.getHeight() - h )/2, 0, w/img:getWidth(), h/img:getHeight( ) )
+		
+	elseif s_mode == "fit-height" then
+		local w, h = fit_height(img_Splash:getWidth(), img_Splash:getHeight() )
+		love.graphics.draw( img, ( love.graphics.getWidth() - w )/2, 0, 0, w/img:getWidth(), h/img:getHeight( ) )
+		
+	else -- must be stretch to fill
+		love.graphics.draw( img, 0, 0, 0, love.graphics.getWidth()/img:getWidth(), love.graphics.getHeight()/img:getHeight() )
+	end		
+
 end

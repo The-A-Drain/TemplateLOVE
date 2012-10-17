@@ -81,7 +81,12 @@ function splash.draw()
 
 	--Draw the splash image
 	love.graphics.setColor( 255, 255, 255, opacity ) -- Set draw opacity to match the desired
-	love.graphics.draw( img_Splash, centerX-img_Splash:getWidth()/2, centerY-img_Splash:getHeight()/2 )
+	if c.spl_scale then
+		-- scale the image based on the scale mode
+		draw_scalemode( img_Splash, c.spl_scalemode )
+	else -- Draw the un-scaled image in the center
+		love.graphics.draw( img_Splash, centerX-img_Splash:getWidth()/2, centerY-img_Splash:getHeight()/2 )
+	end
 	
 	-- Set the splash Font
 	love.graphics.setFont( fonts.cBig )

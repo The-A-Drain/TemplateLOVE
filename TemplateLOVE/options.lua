@@ -49,6 +49,9 @@ function options.init() -- Initialise default graphics settings
 	options.titlePosY	= 0.075
 	options.menuPosX	= 0.28
 	options.menuPosY	= 0.26
+	options.onresolutionchange()
+	
+	--mouseover
 	options.mouseover	= false
 	
 	--option spacing
@@ -108,8 +111,12 @@ end
 function options.draw()
 
 	--Draw the background at current resolution
-	love.graphics.draw( options.bg, 0, 0, math.rad(0), love.graphics.getWidth()/title_bg:getWidth(), love.graphics.getHeight()/title_bg:getHeight(), 0, 0 )
-
+	--love.graphics.draw( options.bg, 0, 0, math.rad(0), love.graphics.getWidth()/title_bg:getWidth(), love.graphics.getHeight()/title_bg:getHeight(), 0, 0 )
+	if c.menu_scalebg then
+		draw_scalemode( options.bg, c.menu_scalemode )
+	else
+		love.graphics.draw( options.bg, 0, 0, math.rad(0), love.graphics.getWidth()/title_bg:getWidth(), love.graphics.getHeight()/title_bg:getHeight(), 0, 0 )
+	end
 	--temp
 	love.graphics.setFont( fonts.pBig )
 	love.graphics.setColor( title_color )
@@ -270,7 +277,14 @@ end
 
 -- Reposition menu on resolution change
 function options.onresolutionchange()
-
+	--Menu position
+	options.titlePosX	= 0.05
+	options.titlePosY	= 0.075
+	options.menuPosX	= 0.28
+	options.menuPosY	= 0.26
+	if (love.graphics.getWidth() / love.graphics.getHeight()) <= 1.4 then --probably 4:3
+		options.titlePosY = options.titlePosY + 0.05
+	end
 end
 
 -- Fetch current settings to display
