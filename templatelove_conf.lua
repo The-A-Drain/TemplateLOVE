@@ -7,7 +7,7 @@ function templatelove_conf(c)
 	-- Control Config
 	-- Use at least one of these
 	c.use_mouse		= true -- Use mouse controls
-	c.use_keyboard	= false -- Use keyboard controls, arrow keys to navigate
+	c.use_keyboard	= true -- Use keyboard controls, arrow keys to navigate
 	c.kbd_accept	= "return"
 	c.kbd_back		= "escape"
 	

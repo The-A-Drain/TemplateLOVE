@@ -35,14 +35,14 @@ function love.load()
 	--Menu/Frontend states
 	started = false
 	state = { 
-		splash 	= "splash",
-		menu 	= "menu",
-		options = "options",
-		game	= "game",
-		pause	= "pause",
-		credits = "credits"
+		splash 	= splash,
+		menu 	= menu,
+		options = options,
+		game	= game,
+		pause	= pause,
+		credits = credits
 	}
-	cur_state = state.splash
+	cur_state = splash
 	
 	-- Other load function for includes files go here --
 	-- load menu
@@ -56,28 +56,8 @@ end
 -- Update the current state
 function love.update(dt)
 	
-	if cur_state	== state.splash then
-		splash.update(dt)
-	end
-	
-	if cur_state	== state.menu then
-		menu.update(dt)
-	end
-	
-	if cur_state	== state.options then
-		options.update(dt)
-	end
-	
-	if cur_state	== state.game then
-		game.run(dt)
-	end
-	
-	if cur_state	== state.pause then
-		--pause.update(dt)
-	end
-	
-	if cur_state	== state.credits then
-		credits.update(dt)
+	if cur_state then
+		cur_state.update(dt)
 	end
 	
 end
@@ -85,29 +65,10 @@ end
 -- Draw function
 function love.draw()
 	
-	if cur_state	== state.splash then
-		splash.draw()
+	if cur_state  then
+		cur_state.draw()
 	end
 	
-	if cur_state	== state.menu then
-		menu.draw()
-	end
-	
-	if cur_state	== state.options then
-		options.draw()
-	end
-	
-	if cur_state	== state.game then
-		game.draw()
-	end
-	
-	if cur_state	== state.pause then
-		--pause.draw()
-	end
-	
-	if cur_state	== state.credits then
-		credits.draw()
-	end
 end
 
 -- Keypress Function
@@ -115,26 +76,14 @@ end
 -- them to the current state
 function love.keypressed(key)
 
-	if cur_state	== state.game then 
-		game.keypressed(key)
+	if not c.use_keyboard and not (cur_state == game) then
+		return nil
 	end
 
-	if not c.use_keyboard then
-		return nil
-	end	
-	
-	if cur_state== state.splash then
-		splash.keypressed(key)
-		
-	elseif cur_state== state.menu then
-		menu.keypressed(key)
-		
-	elseif cur_state== state.options then
-		options.keypressed(key)
-		
-	elseif cur_state== state.credits then
-		credits.keypressed(key)
+	if cur_state  then 
+		cur_state.keypressed(key)
 	end
+
 end
 
 -- Mouse Pressed function
@@ -142,34 +91,20 @@ end
 -- for processing
 function love.mousepressed(x,y,k)
 
-	if cur_state	== state.game then 
-		game.mousepressed(x,y,k)
-	end
-	
-	if not c.use_mouse then
+	if not c.use_mouse and not (cur_state == game) then
 		return nil
 	end
-	
-	if cur_state== state.splash then
-		splash.mousepressed(x,y,k)
-		
-	elseif cur_state== state.menu then
-		menu.mousepressed(x,y,k)
-		
-	elseif cur_state== state.options then
-		options.mousepressed(x,y,k)
-		
-	elseif cur_state== state.credits then
-		credits.mousepressed(x,y,k)
+
+	if cur_state then 
+		cur_state.mousepressed(x,y,k)
 	end
+	
 end
 
 -- Is called when options.lua changes the resolution
 -- and updates the other aspects of the menu
 function love.onresolutionchange()
-	game.onresolutionchange()
-	--splash.onresolutionchange()
-	menu.onresolutionchange()
-	options.onresolutionchange()
-	credits.onresolutionchange()
+	if cur_state then 
+		cur_state.onresolutionchange()
+	end
 end

@@ -7,7 +7,7 @@ game = {}
 function game.init()
 end
 
-function game.run()
+function game.update()
 end
 
 function game.draw()
