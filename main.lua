@@ -55,6 +55,11 @@ function love.load()
 	-- Mouse position at the end of each frame
 	previous_mouse_x = 0;
 	previous_mouse_y = 0;
+	
+	-- Disable default mouse
+	cursor = love.graphics.newImage("ui_assets/cursor.png")
+	love.mouse.setVisible(false)
+	love.mouse.setGrab(false)
 end
 
 -- Update the current state
@@ -69,11 +74,19 @@ end
 
 -- Draw function
 function love.draw()
+
+	
 	
 	if cur_state  then
 		cur_state.draw()
 	end
 	
+	-- Draw the mouse cursor on top
+	love.drawcursor()
+end
+
+function love.drawcursor()
+	love.graphics.draw(cursor, love.mouse.getX(), love.mouse.getY() )
 end
 
 -- Keypress Function
@@ -109,12 +122,12 @@ end
 -- Is called when options.lua changes the resolution
 -- and updates the other aspects of the menu
 function love.onresolutionchange()
-	splash.resolutionchanged()
-	menu.resolutionchanged()
-	options.resolutionchanged()
+	--splash.onresolutionchange()
+	menu.onresolutionchange()
+	options.onresolutionchange()
 	--game.resolutionchanged()
 	--pause	= pause,
-	credits.resolutionchanged()
+	credits.onresolutionchange()
 end
 
 -- Stretch the rectangle to fit the screen

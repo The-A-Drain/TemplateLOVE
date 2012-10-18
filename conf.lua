@@ -12,8 +12,8 @@ function love.conf(t)
 	
 	--Screen dimensions and settings
 	t.fullscreen		= false
-	t.screen.width		= 1024
-	t.screen.height		= 768
+	t.screen.width		= 1280
+	t.screen.height		= 720
 	
 	t.screen.vsync		= true
 	t.screen.fsaa		= 0
