@@ -62,6 +62,10 @@ function options.init() -- Initialise default graphics settings
 	optionMenuY			= 0.225
 end
 
+function options.create_button(x, y, w, h)
+	table.insert(options.buttons, {x,y,w,h } );
+end
+
 -- Update
 function options.update(dt)
 
@@ -182,6 +186,8 @@ end
 function options.mousepressed( x,y,k )
 	if options.mouseover and k == "l" then
 		options.processinput( "right" )
+	elseif options.mouseover and k == "r" then
+		options.processinput( "left" )
 	end
 	
 	-- Check whether to apply settings
