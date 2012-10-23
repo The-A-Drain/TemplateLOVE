@@ -28,9 +28,9 @@ function options.init() -- Initialise default graphics settings
 	
 	maxFSAA				= 8
 	
-	option_items		= { "Windowed", "Fullscreen", "Vsync", "Fullscreen", "FSAA",
+	options.option_items		= { "Windowed", "Fullscreen", "Vsync", "Fullscreen", "FSAA",
 							"Apply changes", "Cancel" }
-	cur_option			= 1
+	options.cur_option			= 1
 	
 	--current options
 	options.cur_w_mode		= 1
@@ -55,15 +55,11 @@ function options.init() -- Initialise default graphics settings
 	options.mouseover	= false
 	
 	--option spacing
-	reset_color			= false
+	options.reset_color			= false
 	option_spacing		= 46
 	option_xOffset		= 400
 	optionMenuX			= 0.1
 	optionMenuY			= 0.225
-end
-
-function options.create_button(x, y, w, h)
-	table.insert(options.buttons, {x,y,w,h } );
 end
 
 -- Update
@@ -71,10 +67,10 @@ function options.update(dt)
 
 	if c.use_keyboard then
 		--adjust current selection
-		if cur_option > #option_items then
-			cur_option = 1
-		elseif cur_option < 1 then
-			cur_option = #option_items
+		if options.cur_option > #options.option_items then
+			options.cur_option = 1
+		elseif options.cur_option < 1 then
+			options.cur_option = #options.option_items
 		end
 	end
 	
@@ -93,7 +89,7 @@ function options.update(dt)
 	options.mouseover = false
 	
 	--love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 1
-	for i=1, #option_items+1, 1 do
+	for i=1, #options.option_items+1, 1 do
 		if i==6 then i = 7 end--6 is skipped, there's nothing there
 		
 		if menu.checkbutton_mouseover(mx, my,
@@ -104,7 +100,7 @@ function options.update(dt)
 									  
 			local newOption = i
 			if i > 6 then newOption = newOption - 1 end
-			cur_option = newOption	
+			options.cur_option = newOption	
 			options.mouseover = true
 		end
 		
@@ -123,12 +119,12 @@ function options.draw()
 	end
 	--temp
 	love.graphics.setFont( fonts.pBig )
-	love.graphics.setColor( title_color )
+	love.graphics.setColor( menu.title_color )
 	love.graphics.print( "Options Menu", love.graphics.getWidth()*options.titlePosX, love.graphics.getHeight()*options.titlePosY )
 	
 	--Draw menu options
 	love.graphics.setFont( fonts.pSmall )
-	love.graphics.setColor( menuItem_color )
+	love.graphics.setColor( menu.menuItem_color )
 	
 	-- wRes
 	options.draw_wres()
@@ -159,9 +155,9 @@ function options.keypressed(key)
 	
 	-- Settings navigation
 	if key == "up" then
-		cur_option = cur_option - 1
+		options.cur_option = options.cur_option - 1
 	elseif key == "down" then
-		cur_option = cur_option + 1
+		options.cur_option = options.cur_option + 1
 	end
 	
 	--Settings changes
@@ -172,11 +168,11 @@ function options.keypressed(key)
 	end
 	
 	--Check whether to apply settings
-	if (key == ' ' or key == "return") and cur_option == 6 then
+	if (key == ' ' or key == "return") and options.cur_option == 6 then
 		options.applysettings()
 	end
 	--or exit the options menu
-	if (key == ' ' or key == "return") and cur_option == 7 then
+	if (key == ' ' or key == "return") and options.cur_option == 7 then
 		options.close_menu()
 	end
 	
@@ -191,12 +187,12 @@ function options.mousepressed( x,y,k )
 	end
 	
 	-- Check whether to apply settings
-	if options.mouseover and k == "l" and cur_option == 6 then
+	if options.mouseover and k == "l" and options.cur_option == 6 then
 		options.applysettings()
 	end
 	
 	-- Check for cancel
-	if options.mouseover and k == "l" and cur_option == 7 then
+	if options.mouseover and k == "l" and options.cur_option == 7 then
 		options.close_menu()
 	end
 end
@@ -204,7 +200,7 @@ end
 -- Determine the selected option input response
 function options.processinput( dir )
 
-	if cur_option 		== 1 then 		--WINDOWED_RES
+	if options.cur_option 		== 1 then 		--WINDOWED_RES
 		
 		if dir == "left" then
 			options.cur_w_mode = options.cur_w_mode - 1
@@ -218,7 +214,7 @@ function options.processinput( dir )
 			options.cur_w_mode = #sup_modes
 		end
 		
-	elseif cur_option 	== 2 then 	--FULLSCREEN_RES
+	elseif options.cur_option 	== 2 then 	--FULLSCREEN_RES
 	
 		if dir == "left" then
 			options.cur_fs_mode = options.cur_fs_mode - 1
@@ -232,7 +228,7 @@ function options.processinput( dir )
 			options.cur_fs_mode = #sup_modes
 		end
 	
-	elseif cur_option	== 3 then 	--VSYNC
+	elseif options.cur_option	== 3 then 	--VSYNC
 	
 		if options.cur_vsync == true then
 			options.cur_vsync = false
@@ -240,7 +236,7 @@ function options.processinput( dir )
 			options.cur_vsync = true
 		end
 	
-	elseif cur_option	== 4 then 	--FULLSCREEN
+	elseif options.cur_option	== 4 then 	--FULLSCREEN
 	
 		if options.cur_fullscreen == true then
 			options.cur_fullscreen = false
@@ -248,7 +244,7 @@ function options.processinput( dir )
 			options.cur_fullscreen = true
 		end
 	
-	elseif cur_option	== 5 then 	--FSAA
+	elseif options.cur_option	== 5 then 	--FSAA
 	
 		if dir == "left" then
 			options.cur_fsaa = options.cur_fsaa - 1
@@ -326,18 +322,18 @@ end
 --Set the color for selected menu option
 function options.set_selected_color(menuItem)
 
-	if cur_option == menuItem then
-		love.graphics.setColor( selection_color )
-		reset_color = true
+	if options.cur_option == menuItem then
+		love.graphics.setColor( menu.selection_color )
+		options.reset_color = true
 	end
 end
 
 --Check whether the color should be reset
-function options.reset_color()
+function options.reset_color_check()
 
-	if reset_color then
-		love.graphics.setColor( menuItem_color )
-		reset_color = false
+	if options.reset_color then
+		love.graphics.setColor( menu.menuItem_color )
+		options.reset_color = false
 	end
 end
 
@@ -352,20 +348,20 @@ function options.draw_wres() 	-- 1 -- SHOW WinRes OPTION
 	options.set_selected_color(1)
 	
 	local str = "<" .. " " .. sup_modes[options.cur_w_mode].width .. "x" .. sup_modes[options.cur_w_mode].height .. " " .. ">"
-	love.graphics.print( option_items[1], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 1 )
+	love.graphics.print( options.option_items[1], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 1 )
 	love.graphics.print( str, (love.graphics.getWidth()*options.menuPosX) + option_xOffset, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 1 )
 	
-	options.reset_color()
+	options.reset_color_check()
 end
 
 function options.draw_fsres() 	-- 2 -- SHOW FullScreenRes OPTION
 	options.set_selected_color(2)
 	
 	local str = "<" .. " " .. sup_modes[options.cur_fs_mode].width .. "x" .. sup_modes[options.cur_fs_mode].height .. " " .. ">"
-	love.graphics.print( option_items[2], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 2 )
+	love.graphics.print( options.option_items[2], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 2 )
 	love.graphics.print( str, (love.graphics.getWidth()*options.menuPosX) + option_xOffset, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 2 )
 	
-	options.reset_color()
+	options.reset_color_check()
 end
 
 function options.draw_vsync() 	-- 3 -- SHOW Vsync OPTION
@@ -378,10 +374,10 @@ function options.draw_vsync() 	-- 3 -- SHOW Vsync OPTION
 		vs = "Off"
 	end
 	
-	love.graphics.print( option_items[3], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 3 )
+	love.graphics.print( options.option_items[3], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 3 )
 	love.graphics.print( vs, (love.graphics.getWidth()*options.menuPosX) + option_xOffset, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 3 )
 	
-	options.reset_color()
+	options.reset_color_check()
 end
 
 function options.draw_fs()		-- 4 -- SHOW FullScreen OPTION
@@ -396,36 +392,36 @@ function options.draw_fs()		-- 4 -- SHOW FullScreen OPTION
 		fs = "ERROR! fs = " .. options.cur_fullscreen
 	end
 	
-	love.graphics.print( option_items[4], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 4 )
+	love.graphics.print( options.option_items[4], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 4 )
 	love.graphics.print( fs, (love.graphics.getWidth()*options.menuPosX) + option_xOffset, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 4 )
 	
-	options.reset_color()
+	options.reset_color_check()
 end
 
 function options.draw_fsaa()	-- 5 -- SHOW FSAA OPTION
 	options.set_selected_color(5)
 	
 	local str = "<" .. options.cur_fsaa .. ">"
-love.graphics.print( option_items[5], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 5 )
+love.graphics.print( options.option_items[5], love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 5 )
 	love.graphics.print( str, (love.graphics.getWidth()*options.menuPosX) + option_xOffset, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 5 )
 	
-	options.reset_color()
+	options.reset_color_check()
 end
 
 function options.draw_apply()	-- 6 -- SHOW APPLY BUTTON
 	options.set_selected_color(6)
 	
-	local str = option_items[6]
+	local str = options.option_items[6]
 	love.graphics.print( str, love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 7 )
 	
-	options.reset_color()
+	options.reset_color_check()
 end
 
 function options.draw_cancel()	-- 7 -- SHOW CANCEL BUTTON
 	options.set_selected_color(7)
 	
-	local str = option_items[7]
+	local str = options.option_items[7]
 	love.graphics.print( str, love.graphics.getWidth()*options.menuPosX, (love.graphics.getHeight()*options.menuPosY) + option_spacing * 8 )
 	
-	options.reset_color()
+	options.reset_color_check()
 end

@@ -52,7 +52,7 @@ end
 function credits.draw()
 	--temp
 	love.graphics.setFont( fonts.cBig )
-	love.graphics.setColor( title_color )
+	love.graphics.setColor( menu.title_color )
 	local str = "CREDITS"
 	local ln  = "---------"
 	love.graphics.print( str, love.graphics.getWidth()/2-love.graphics.getFont():getWidth( str )/2, credits.y_pos )

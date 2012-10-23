@@ -23,27 +23,27 @@ function menu.init()
 		table.insert( menu_items, #menu_items, "Credits" )
 	end
 	
-	cur_selection 		= 1
-	title_color			= { 222, 222, 222, 255 }
-	menuItem_color		= { 170, 170, 170, 255 }
-	selection_color		= { 255, 255, 255, 255 }
-	verticalTextOffset 	= 48
+	menu.cur_selection 		= 1
+	menu.title_color			= { 222, 222, 222, 255 }
+	menu.menuItem_color		= { 170, 170, 170, 255 }
+	menu.selection_color		= { 255, 255, 255, 255 }
+	menu.verticalTextOffset 	= 48
 	
 	
-	title				= love.graphics.getCaption()
+	menu.title				= love.graphics.getCaption()
 	if not c.menu_useCaption then
-		title = c.menu_gameTitle
+		menu.title = c.menu_gamemenu.title
 	end
 	
-	titleX				= 0
-	titleY				= 0
-	menuYPos			= 0
-	menuXPos			= 0
+	menu.titleX				= 0
+	menu.titleY				= 0
+	menu.menuYPos			= 0
+	menu.menuXPos			= 0
 	menu.font 			= fonts.pMedium
 	menu.mouseover		= false;
 	menu.onresolutionchange()
 	
-	title_bg			= love.graphics.newImage( "ui_assets/title/title_bg.png")
+	menu.title_bg			= love.graphics.newImage( "ui_assets/title/title_bg.png")
 end
 
 function menu.update()
@@ -61,13 +61,13 @@ function menu.update()
 	
 	menu.mouseover = false;
 	for i=1, #menu_items, 1 do
-		 --menuXPos, menuYPos + (verticalTextOffset * (i-1))
+		 --menu.menuXPos, menu.menuYPos + (menu.verticalTextOffset * (i-1))
 		 if menu.checkbutton_mouseover(mx, my,
-							 menuXPos, 
-							 menuYPos + (verticalTextOffset * (i-1)),
+							 menu.menuXPos, 
+							 menu.menuYPos + (menu.verticalTextOffset * (i-1)),
 							 menu.font:getWidth(menu_items[i]),
 							 menu.font:getHeight(menu_items[i]) )  then
-			cur_selection = i
+			menu.cur_selection = i
 			menu.mouseover = true;
 		 end
 	end
@@ -83,13 +83,13 @@ end
 
 function menu.onresolutionchange()
 	
-	titleX				= love.graphics:getWidth()/2
-	titleY				= love.graphics:getHeight()*0.10
-	menuYPos			= love.graphics:getHeight()*0.41
-	menuXPos			= love.graphics:getWidth()*0.21
+	menu.titleX				= love.graphics:getWidth()/2
+	menu.titleY				= love.graphics:getHeight()*0.10
+	menu.menuYPos			= love.graphics:getHeight()*0.41
+	menu.menuXPos			= love.graphics:getWidth()*0.21
 	
 	if (love.graphics.getWidth() / love.graphics.getHeight()) <= 1.4 then --probably 4:3
-		titleY = titleY + love.graphics:getHeight()*0.10
+		menu.titleY = menu.titleY + love.graphics:getHeight()*0.10
 	end
 	--print ("reschange_menu")
 end
@@ -99,38 +99,38 @@ function menu.draw()
 	-- Reset color
 	love.graphics.setColor( 255, 255, 255, 255 )
 	
-	-- Draw the title background
+	-- Draw the menu.title background
 	-- at current resolution
 	if c.menu_scalebg then
-		draw_scalemode( title_bg, c.menu_scalemode )
+		draw_scalemode( menu.title_bg, c.menu_scalemode )
 	else
-		love.graphics.draw( title_bg, 0, 0, math.rad(0), love.graphics.getWidth()/title_bg:getWidth(), love.graphics.getHeight()/title_bg:getHeight(), 0, 0 )
+		love.graphics.draw( menu.title_bg, 0, 0, math.rad(0), love.graphics.getWidth()/menu.title_bg:getWidth(), love.graphics.getHeight()/menu.title_bg:getHeight(), 0, 0 )
 	end
 	
 	love.graphics.setFont( fonts.nMedium )
 	
-	-- Draw the game title
+	-- Draw the game menu.title
 	love.graphics.setFont( fonts.pBig )
-	love.graphics.setColor( title_color )
-	love.graphics.print( title, titleX - love.graphics.getFont():getWidth( title )/2, titleY )
+	love.graphics.setColor( menu.title_color )
+	love.graphics.print( menu.title, menu.titleX - love.graphics.getFont():getWidth( menu.title )/2, menu.titleY )
 	
 	-- Draw the menu itself
 	love.graphics.setFont( menu.font )
 	
 	for i=1, #menu_items, 1 do
 
-		if i == cur_selection then
-			love.graphics.setColor( selection_color )
+		if i == menu.cur_selection then
+			love.graphics.setColor( menu.selection_color )
 		else
-			love.graphics.setColor( menuItem_color )
+			love.graphics.setColor( menu.menuItem_color )
 		end
-		love.graphics.print( menu_items[i], menuXPos, menuYPos + (verticalTextOffset * (i-1)) )
+		love.graphics.print( menu_items[i], menu.menuXPos, menu.menuYPos + (menu.verticalTextOffset * (i-1)) )
 	end
 end
 
 -- Process the user selection 
 function menu.process_option()
-	local str	= menu_items[cur_selection]
+	local str	= menu_items[menu.cur_selection]
 	if str == "Start" then		-- START
 		cur_state = state.game
 	
@@ -149,15 +149,15 @@ function menu.keypressed(key)
 
 	-- Menu selection
 	if key == "up" then
-		cur_selection = cur_selection - 1
+		menu.cur_selection = menu.cur_selection - 1
 	elseif key == "down" then
-		cur_selection = cur_selection + 1
+		menu.cur_selection = menu.cur_selection + 1
 	end
 	-- Menu wrap-around
-	if cur_selection > #menu_items then
-		cur_selection = 1
-	elseif cur_selection < 1 then
-		cur_selection = #menu_items
+	if menu.cur_selection > #menu_items then
+		menu.cur_selection = 1
+	elseif menu.cur_selection < 1 then
+		menu.cur_selection = #menu_items
 	end
 	
 	-- User confirmation
@@ -167,7 +167,7 @@ function menu.keypressed(key)
 	
 	-- Quit key
 	if key == 'escape' then
-		cur_selection = 4
+		menu.cur_selection = 4
 		menu.process_option()
 	end
 	
